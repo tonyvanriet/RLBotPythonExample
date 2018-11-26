@@ -72,7 +72,11 @@ class ShazBot(BaseAgent):
 
         #dodging
         time_difference = time.time() - self.start
-        if time_difference > 2.2 and distance2D(target_object.location, self.me.location) > 1000 and abs(angle_to_ball) < 1.3:
+        if (time_difference > 2.2
+                and distance2D(target_object.location, self.me.location) > 1200
+                and abs(angle_to_ball) < 1.3
+                and current_speed > 750
+                and self.me.rotation.data[2] == 0.0):
             self.start = time.time()
         elif time_difference <= 0.1:
             controller_state.jump = True
