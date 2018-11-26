@@ -29,7 +29,7 @@ class exampleATBA:
 
     def execute(self, agent):
         target_location = agent.ball
-        target_speed = velocity2D(agent.ball) + (distance2D(agent.ball,agent.me)/0.1)
+        target_speed = velocity2D(agent.ball) + (distance2D(agent.ball,agent.me)/1.5)
 
         return agent.exampleController(target_location, target_speed)
 
@@ -55,12 +55,12 @@ class ShazBot(BaseAgent):
 
         current_speed = velocity2D(self.me)
         #steering
-        if angle_to_ball > 0.5:
+        if angle_to_ball > 0.1:
             controller_state.steer = controller_state.yaw = 1.0
-        elif angle_to_ball < -0.5:
+        elif angle_to_ball < -0.1:
             controller_state.steer = controller_state.yaw = -1.0
         else:
-            controller_state.steer = controller_state.yaw = angle_to_ball * 2
+            controller_state.steer = controller_state.yaw = angle_to_ball * 10
 
         #throttle
         if target_speed > current_speed:
@@ -119,7 +119,7 @@ def rotator_to_matrix(our_object):
 
     matrix = []
     matrix.append(Vector3([CP*CY, CP*SY, SP]))
-    matrix.append(Vector3([CY*SP*SR-CR*SY, SY*SP*SR+CR*CY, -CP*SR]))
+    matrix.append(Vector3([CY*SP*SR-CR*SY, SY*SP*SR+CR*CY, -CP * SR]))
     matrix.append(Vector3([-CR*CY*SP-SR*SY, -CR*SY*SP+SR*CY, CP*CR]))
     return matrix
 
