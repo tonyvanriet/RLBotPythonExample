@@ -56,11 +56,11 @@ class ShazBot(BaseAgent):
         current_speed = velocity2D(self.me)
         #steering
         if angle_to_ball > 0.1:
-            controller_state.steer = controller_state.yaw = 1
+            controller_state.steer = controller_state.yaw = 1.0
         elif angle_to_ball < -0.1:
-            controller_state.steer = controller_state.yaw = -1
+            controller_state.steer = controller_state.yaw = -1.0
         else:
-            controller_state.steer = controller_state.yaw = 0
+            controller_state.steer = controller_state.yaw = angle_to_ball * 10
 
         #throttle
         if target_speed > current_speed:
