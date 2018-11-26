@@ -14,12 +14,22 @@ class Shazling(BaseAgent):
         self.ball = obj()
         self.start = time.time()
 
-        self.state = quickShot()
-        self.controller = shotController
+        self.state = calcShot()
+        self.controller = calcController
+
+    def checkState(self):
+        if self.state.expired:
+            if calcShot().available(self) == True:
+                self.state = calcShot()
+            elif quickShot().available(self) == True:
+                self.state = quickShot()
+            else:
+                self.state = quickShot()
 
 
     def get_output(self, game: GameTickPacket) -> SimpleControllerState:
         self.preprocess(game)
+        self.checkState()
         return self.state.execute(self)
 
     def preprocess(self,game):
