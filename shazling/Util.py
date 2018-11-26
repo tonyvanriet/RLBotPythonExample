@@ -4,6 +4,13 @@ GOAL_WIDTH = 1900
 FIELD_LENGTH = 10280
 FIELD_WIDTH = 8240
 
+boosts = [
+    [3584, 0,0],
+    [-3584, 0,0],
+    [3072, 4096,0],
+    [3072, 4096,0]
+    ]
+
 class Vector3:
     def __init__(self, data):
         self.data = data
@@ -13,20 +20,14 @@ class Vector3:
         return Vector3([self.data[0]-value.data[0],self.data[1]-value.data[1],self.data[2]-value.data[2]])
     def __mul__(self,value):
         return (self.data[0]*value.data[0] + self.data[1]*value.data[1] + self.data[2]*value.data[2])
+    def magnitude(self):
+        return math.sqrt((self.data[0]*self.data[0]) + (self.data[1] * self.data[1])+ (self.data[2]* self.data[2]))
     def normalize(self):
-        if abs(self.data[0]) > abs(self.data[1]) and abs(self.data[0]) > abs(self.data[2]):
-            self.data[1] /= abs(self.data[0])
-            self.data[2] /= abs(self.data[0])
-            self.data[0] = sign(self.data[0])
-        elif abs(self.data[1]) > abs(self.data[0]) and abs(self.data[1]) > abs(self.data[2]):
-            self.data[0] /= abs(self.data[1])
-            self.data[2] /= abs(self.data[1])
-            self.data[1] = sign(self.data[1])
+        mag = self.magnitude()
+        if mag != 0:
+            return Vector3([self.data[0]/mag, self.data[1]/mag, self.data[2]/mag])
         else:
-            self.data[0] /= abs(self.data[2])
-            self.data[1] /= abs(self.data[2])
-            self.data[2] = sign(self.data[2])
-        return self
+            return Vector3([0,0,0])
 
 class Matrix2():
     def __init__(self,data):
@@ -45,6 +46,37 @@ class obj:
 
         self.local_location = Vector3([0,0,0])
         self.boost = 0
+
+def quad(a,b,c):
+    inside = (b**2) - (4*a*c)
+    if inside < 0 or a == 0:
+        return 0.1
+    else:
+        n = ((-b - math.sqrt(inside))/(2*a))
+        p = ((-b + math.sqrt(inside))/(2*a))
+        if p > n:
+            return p
+        return n
+
+def future(ball,time):
+    x = ball.location.data[0] + (ball.velocity.data[0] * time)
+    y = ball.location.data[1] + (ball.velocity.data[1] * time)
+    z = ball.location.data[2] + (ball.velocity.data[2] * time)
+    return Vector3([x,y,z])
+
+def timeZ(ball):
+    rate = 0.97
+    return quad(-325, ball.velocity.data[2] * rate, ball.location.data[2]-92.75)
+
+def dpp(target_loc,target_vel,our_loc,our_vel):
+    target_loc = toLocation(target_loc)
+    our_loc = toLocation(our_loc)
+    our_vel = toLocation(our_vel)
+    d = distance2D(target_loc,our_loc)
+    if d != 0:
+        return (((target_loc.data[0] - our_loc.data[0]) * (target_vel.data[0] - our_vel.data[0])) + ((target_loc.data[1] - our_loc.data[1]) * (target_vel.data[1] - our_vel.data[1])))/d
+    else:
+        return 0
 
 def to_local(target_object,our_object):
     x = (toLocation(target_object) - our_object.location) * our_object.matrix[0]
@@ -69,9 +101,8 @@ def rotator_to_matrix(our_object):
 
 def ballReady(agent):
     ball = agent.ball
-    if abs(ball.velocity.data[2]) < 100 and ball.location.data[2] < 250:
-        if abs(ball.location.data[1]) < 5000:
-            return True
+    if abs(ball.velocity.data[2]) < 150 and timeZ(agent.ball) < 1:
+        return True
     return False
 
 def ballProject(agent):
@@ -79,7 +110,6 @@ def ballProject(agent):
     goal_to_ball = (agent.ball.location - goal).normalize()
     difference = agent.me.location - agent.ball.location
     return difference * goal_to_ball
-
 
 def sign(x):
     if x <= 0:
