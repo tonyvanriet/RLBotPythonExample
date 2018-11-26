@@ -81,8 +81,8 @@ def draw_debug(renderer, car, ball, action_display):
     renderer.begin_rendering()
 
     car_rotation = car.physics.rotation
-    car_rotation_display = 'p: {0:.2f}, y: {1:.2f}, r: {2:.2f}'.format(car_rotation.pitch, car_rotation.yaw, car_rotation.roll)
-    # renderer.draw_string_3d([0, 0, 0], 2, 2, car_rotation_display, renderer.white())
+    car_rotation_display = 'p:{0:.2f} y:{1:.2f} r:{2:.2f}'.format(car_rotation.pitch, car_rotation.yaw, car_rotation.roll)
+    renderer.draw_string_2d(0, 0, 2, 2, car_rotation_display, renderer.white())
 
     # draw a line from the car to the ball
     renderer.draw_line_3d(car.physics.location, ball.physics.location, renderer.white())
