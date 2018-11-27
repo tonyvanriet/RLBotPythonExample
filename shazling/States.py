@@ -197,6 +197,30 @@ class wait():
 
         return frugalController(agent,target,speed)
 
+class rotateBack:
+    def __init__(self):
+        self.expired = False
+
+    def available(self,agent):
+        own_goal_location = Vector3([0, 5150*sign(agent.team), 0])
+        return (abs(distance2D(agent.me.location.data, own_goal_location)) > 700)
+
+    def execute(self,agent):
+        agent.controller = frugalController
+        own_goal_location = Vector3([0, 5150*sign(agent.team), 200])
+        target_location = own_goal_location
+
+        location = toLocal(target_location,agent.me)
+        angle_to_target = math.atan2(location.data[1],location.data[0])
+        distance_to_target = distance2D(agent.me, target_location)
+
+        speedCorrection =  ((2+ abs(angle_to_target)**2) * 350)
+        speed = 2400 - speedCorrection
+
+        self.expired = True
+
+        return agent.controller(agent, target_location, speed)
+
 def frugalController(agent,target,speed):
     controller_state = SimpleControllerState()
     location = toLocal(target,agent.me)
