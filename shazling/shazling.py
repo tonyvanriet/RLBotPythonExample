@@ -31,6 +31,8 @@ class Shazling(BaseAgent):
                 self.state = calcShot()
             elif quickShot().available(self) == True:
                 self.state = quickShot()
+            elif getBoost().available(self) == True:
+                self.state = getBoost()
             elif wait().available(self) == True:
                 self.state = wait()
             else:

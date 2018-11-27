@@ -138,6 +138,35 @@ class quickShot:
 
         return agent.controller(agent,target_location, speed)
 
+class getBoost():
+    def __init__(self):
+        self.expired = False
+    def available(self, agent):
+        return timeZ(agent.ball) > 1.5 and agent.me.boost < 35
+    def execute(self,agent):
+        #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
+        ball_future = future(agent.ball, timeZ(agent.ball))
+
+        closest = 0
+        closest_distance =  distance2D(boosts[0], ball_future)
+
+        #going through every large pad to see which one is closest to our ball_future guesstimation
+        for i in range(1,len(boosts)):
+            if distance2D(boosts[i], ball_future) < closest_distance:
+                closest = i
+                closest_distance =  distance2D(boosts[i], ball_future)
+
+        target = boosts[closest]
+        speed = 2300
+
+        if speed <= 100:
+            speed = 0
+
+        if ballReady(agent):
+            self.expired = True
+
+        return frugalController(agent,target,speed)
+
 class wait():
     def __init__(self):
         self.expired = False
@@ -148,7 +177,7 @@ class wait():
         #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
         ball_future = future(agent.ball, timeZ(agent.ball))
 
-        if agent.me.boost < 35: #if we are low on boost, we'll go for boot
+        if agent.me.boost < 35: #if we are low on boost, we'll go for boost
             closest = 0
             closest_distance =  distance2D(boosts[0], ball_future)
 
