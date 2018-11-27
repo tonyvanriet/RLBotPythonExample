@@ -147,7 +147,7 @@ class getBoost():
     def __init__(self):
         self.expired = False
     def available(self, agent):
-        return timeZ(agent.ball) > 1.5 and agent.me.boost < 35
+        return timeZ(agent.ball) > 1.5 and agent.me.boost < 50
     def execute(self,agent):
         #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
         ball_future = future(agent.ball, timeZ(agent.ball))
@@ -167,7 +167,7 @@ class getBoost():
         if speed <= 100:
             speed = 0
 
-        if ballReady(agent):
+        if ballReady(agent) or agent.me.boost > 80:
             self.expired = True
 
         return frugalController(agent,target,speed)
