@@ -53,8 +53,11 @@ class Shazling(BaseAgent):
         return controllerState
 
     def drawDebugInfo(self, game):
-        state_display = type(self.state).__name__
-        self.renderer.draw_string_3d(self.me.location.data, 2, 2, state_display, self.renderer.white())
+        car_state_display = type(self.state).__name__
+        self.renderer.draw_string_3d(self.me.location.data, 2, 2, car_state_display, self.renderer.white())
+
+        ball_time_z_display = 'ball time z: {0:.2f}'.format(timeZ(self.ball))
+        self.renderer.draw_string_2d(0, 0, 2, 2, ball_time_z_display, self.renderer.white())
 
     def preprocess(self,game):
         self.players = []
