@@ -177,25 +177,13 @@ class wait():
         #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
         ball_future = future(agent.ball, timeZ(agent.ball))
 
-        if agent.me.boost < 35: #if we are low on boost, we'll go for boost
-            closest = 0
-            closest_distance =  distance2D(boosts[0], ball_future)
+        #if we have boost, we just go towards the ball_future position, and slow down just like in exampleATBA as we get close
+        target = ball_future
+        current = velocity2D(agent.me)
+        ratio = distance2D(agent.me,target)/(current + 0.01)
 
-            #going through every large pad to see which one is closest to our ball_future guesstimation
-            for i in range(1,len(boosts)):
-                if distance2D(boosts[i], ball_future) < closest_distance:
-                    closest = i
-                    closest_distance =  distance2D(boosts[i], ball_future)
+        speed = cap(600 * ratio,0,2300)
 
-            target = boosts[closest]
-            speed = 2300
-        else:
-            #if we have boost, we just go towards the ball_future position, and slow down just like in exampleATBA as we get close
-            target = ball_future
-            current = velocity2D(agent.me)
-            ratio = distance2D(agent.me,target)/(current + 0.01)
-
-            speed = cap(600 * ratio,0,2300)
         if speed <= 100:
             speed = 0
 
