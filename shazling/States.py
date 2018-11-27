@@ -9,9 +9,14 @@ class calcShot:
         self.expired = False
 
     def available(self,agent):
-        if ballReady(agent) and abs(agent.ball.location.data[1]) < 5050 and ballProject(agent) > 500 - (distance2D(agent.ball,agent.me)/2):
-            return True
-        return False
+        ball_is_away_from_either_back_wall = abs(agent.ball.location.data[1]) < 5050
+        car_is_far_enough_behind_ball = ballProject(agent) > (500 - (distance2D(agent.ball,agent.me)/2))
+
+        return (
+            ballReady(agent)
+            and ball_is_away_from_either_back_wall
+            and car_is_far_enough_behind_ball
+        )
 
     def execute(self,agent):
         agent.controller = calcController
