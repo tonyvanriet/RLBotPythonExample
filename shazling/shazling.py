@@ -54,10 +54,20 @@ class Shazling(BaseAgent):
 
     def drawDebugInfo(self, game):
         car_state_display = type(self.state).__name__
-        self.renderer.draw_string_3d(self.me.location.data, 2, 2, car_state_display, self.renderer.white())
+        car_ball_project_display = 'car->ball project: {0:4.0f}'.format(ballProject(self))
+        car_to_ball = 'car->ball: {0:4.0f}'.format(distance2D(self.ball,self.me))
+
+        car_display = '\n'.join([
+            car_state_display,
+            car_ball_project_display,
+            car_to_ball
+        ])
+        self.renderer.draw_string_3d(self.me.location.data, 2, 2, car_display, self.renderer.white())
 
         ball_time_z_display = 'ball time z: {0:.2f}'.format(timeZ(self.ball))
-        self.renderer.draw_string_2d(0, 0, 2, 2, ball_time_z_display, self.renderer.white())
+
+        stationary_display_x = 1000 * self.team
+        self.renderer.draw_string_2d(stationary_display_x, 0, 2, 2, ball_time_z_display, self.renderer.white())
 
     def preprocess(self,game):
         self.players = []
