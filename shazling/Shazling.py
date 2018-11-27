@@ -27,16 +27,33 @@ class Shazling(BaseAgent):
 
     def checkState(self):
         if self.state.expired:
-            if calcShot().available(self) == True:
-                self.state = calcShot()
-            elif quickShot().available(self) == True:
-                self.state = quickShot()
-            elif getBoost().available(self) == True:
-                self.state = getBoost()
-            elif wait().available(self) == True:
-                self.state = wait()
+            if self.team == 0:
+                if calcShot().available(self):
+                    self.state = calcShot()
+                # elif quickShot().available(self):
+                #     self.state = quickShot()
+                elif getBoost().available(self):
+                    self.state = getBoost()
+                elif rotateBack().available(self):
+                    self.state = rotateBack()
+                elif wait().available(self):
+                    self.state = wait()
+                else:
+                    self.state = quickShot()
             else:
-                self.state = quickShot()
+                if calcShot().available(self):
+                    self.state = calcShot()
+                elif quickShot().available(self):
+                    self.state = quickShot()
+                elif getBoost().available(self):
+                    self.state = getBoost()
+                # elif rotateBack().available(self):
+                #     self.state = rotateBack()
+                elif wait().available(self):
+                    self.state = wait()
+                else:
+                    self.state = quickShot()
+
 
 
     def get_output(self, game: GameTickPacket) -> SimpleControllerState:
