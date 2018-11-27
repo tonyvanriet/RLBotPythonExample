@@ -106,9 +106,8 @@ def ballReady(agent):
     return False
 
 """
-returns a scalar that increases the farther the car is away from the ball
-on the side that's away from the scoring goal.
-need to rewatch Goose's videos to see where he explains this one.
+the distance from the ball to the car
+projected along a line from the goal to the ball.
 """
 def ballProject(agent):
     goal = Vector3([0,-sign(agent.team)*FIELD_LENGTH/2,100])
