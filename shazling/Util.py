@@ -101,7 +101,7 @@ def rotator_to_matrix(our_object):
 
 def ballReady(agent):
     ball = agent.ball
-    if abs(ball.velocity.data[2]) < 150 and timeZ(agent.ball) < 1:
+    if abs(ball.velocity.data[2]) < 200 and timeZ(agent.ball) < 1.5:
         return True
     return False
 
