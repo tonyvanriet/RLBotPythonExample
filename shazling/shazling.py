@@ -40,14 +40,19 @@ class Shazling(BaseAgent):
     def get_output(self, game: GameTickPacket) -> SimpleControllerState:
         self.preprocess(game)
         self.checkState()
-        self.renderDebugInfo(game)
-        return self.state.execute(self)
 
-    def renderDebugInfo(self, game):
-        state_display = type(self.state).__name__
         self.renderer.begin_rendering()
-        self.renderer.draw_string_3d(self.me.location.data, 2, 2, state_display, self.renderer.white())
+        self.drawDebugInfo(game)
+
+        controllerState = self.state.execute(self)
+
         self.renderer.end_rendering()
+
+        return controllerState
+
+    def drawDebugInfo(self, game):
+        state_display = type(self.state).__name__
+        self.renderer.draw_string_3d(self.me.location.data, 2, 2, state_display, self.renderer.white())
 
     def preprocess(self,game):
         self.players = []
