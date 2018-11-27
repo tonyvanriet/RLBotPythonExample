@@ -88,13 +88,11 @@ class calcShot:
         colorBlue =cap(255-colorRed,0,255)
 
         #see the rendering tutorial on github about this, just drawing lines from the posts to the ball and one from the ball to the target
-        agent.renderer.begin_rendering()
         agent.renderer.draw_line_3d(bloc.data, leftPost.data, agent.renderer.create_color(255,255,0,0))
         agent.renderer.draw_line_3d(bloc.data, rightPost.data, agent.renderer.create_color(255,0,255,0))
 
         agent.renderer.draw_line_3d(agent.ball.location.data,target_location.data, agent.renderer.create_color(255,colorRed,0,colorBlue))
         agent.renderer.draw_rect_3d(target_location.data, 10,10, True, agent.renderer.create_color(255,colorRed,0,colorBlue))
-        agent.renderer.end_rendering()
 
         if  ballReady(agent) == False or abs(agent.ball.location.data[1]) > 5050:
             self.expired = True
