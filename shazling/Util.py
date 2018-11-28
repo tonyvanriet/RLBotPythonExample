@@ -101,15 +101,19 @@ def rotator_to_matrix(our_object):
 
 def ballReady(agent):
     ball = agent.ball
-    if abs(ball.velocity.data[2]) < 200 and timeZ(agent.ball) < 1.5:
-        return True
-    return False
+    ball_vertical_velocity = abs(ball.velocity.data[2])
+    ball_horizontal_velocity = math.sqrt(ball.velocity.data[0]**2 + ball.velocity.data[1]**2)
 
-"""
-the distance from the ball to the car
-projected along a line from the goal to the ball.
-in other words, how far is the car behind the ball.
-"""
+    return (
+        ball_vertical_velocity < 200
+        and ball_horizontal_velocity < 1000
+        and timeZ(agent.ball) < 1.5
+    )
+
+# the distance the ball and the car
+# as projected along a line from the goal to the ball.
+# in other words, how far the car is behind the ball,
+# relative to the scoring goal.
 def ballProject(agent):
     goal = Vector3([0,-sign(agent.team)*FIELD_LENGTH/2,100])
     goal_to_ball = (agent.ball.location - goal).normalize()
