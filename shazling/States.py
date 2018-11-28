@@ -146,8 +146,10 @@ class quickShot:
 class getBoost():
     def __init__(self):
         self.expired = False
+
     def available(self, agent):
         return timeZ(agent.ball) > 1.5 and agent.me.boost < 50
+
     def execute(self,agent):
         #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
         ball_future = future(agent.ball, timeZ(agent.ball))
@@ -164,9 +166,6 @@ class getBoost():
         target = boosts[closest]
         speed = 2300
 
-        if speed <= 100:
-            speed = 0
-
         if ballReady(agent) or agent.me.boost > 80:
             self.expired = True
 
@@ -175,9 +174,11 @@ class getBoost():
 class wait():
     def __init__(self):
         self.expired = False
+
     def available(self, agent):
         if timeZ(agent.ball) > 1.5:
             return True
+
     def execute(self,agent):
         #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
         ball_future = future(agent.ball, timeZ(agent.ball))
