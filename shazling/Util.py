@@ -108,6 +108,7 @@ def ballReady(agent):
 """
 the distance from the ball to the car
 projected along a line from the goal to the ball.
+in other words, how far is the car behind the ball.
 """
 def ballProject(agent):
     goal = Vector3([0,-sign(agent.team)*FIELD_LENGTH/2,100])

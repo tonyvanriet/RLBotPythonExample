@@ -27,7 +27,7 @@ class Shazling(BaseAgent):
 
     def checkState(self):
         if self.state.expired:
-            if self.team == 0:
+            if self.team == 0: # blue
                 if calcShot().available(self):
                     self.state = calcShot()
                 # elif quickShot().available(self):
