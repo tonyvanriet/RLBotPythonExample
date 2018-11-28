@@ -27,34 +27,38 @@ class Shazling(BaseAgent):
 
     def checkState(self):
         if self.state.expired:
-            if self.team == 0: # blue
-                if calcShot().available(self):
-                    self.state = calcShot()
-                # elif quickShot().available(self):
-                #     self.state = quickShot()
-                elif getBoost().available(self):
-                    self.state = getBoost()
-                elif rotateBack().available(self):
-                    self.state = rotateBack()
-                elif wait().available(self):
-                    self.state = wait()
-                else:
-                    self.state = quickShot()
+            if self.team == 0:
+                self.findStateForBlue()
             else:
-                if calcShot().available(self):
-                    self.state = calcShot()
-                elif quickShot().available(self):
-                    self.state = quickShot()
-                elif getBoost().available(self):
-                    self.state = getBoost()
-                # elif rotateBack().available(self):
-                #     self.state = rotateBack()
-                elif wait().available(self):
-                    self.state = wait()
-                else:
-                    self.state = quickShot()
+                self.findStateForOrange()
 
+    def findStateForBlue(self):
+        if calcShot().available(self):
+            self.state = calcShot()
+        # elif quickShot().available(self):
+        #     self.state = quickShot()
+        elif getBoost().available(self):
+            self.state = getBoost()
+        elif rotateBack().available(self):
+            self.state = rotateBack()
+        elif wait().available(self):
+            self.state = wait()
+        else:
+            self.state = quickShot()
 
+    def findStateForOrange(self):
+        if calcShot().available(self):
+            self.state = calcShot()
+        elif quickShot().available(self):
+            self.state = quickShot()
+        elif getBoost().available(self):
+            self.state = getBoost()
+        # elif rotateBack().available(self):
+        #     self.state = rotateBack()
+        elif wait().available(self):
+            self.state = wait()
+        else:
+            self.state = quickShot()
 
     def get_output(self, game: GameTickPacket) -> SimpleControllerState:
         self.preprocess(game)
