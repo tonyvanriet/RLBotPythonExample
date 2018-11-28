@@ -217,8 +217,7 @@ class rotateBack:
         angle_to_target = math.atan2(location.data[1],location.data[0])
         distance_to_target = distance2D(agent.me, target_location)
 
-        speedCorrection =  ((2+ abs(angle_to_target)**2) * 350)
-        speed = 2400 - speedCorrection
+        speed = 2300
 
         self.expired = True
 
