@@ -151,6 +151,8 @@ class getBoost():
         return timeZ(agent.ball) > 1.5 and agent.me.boost < 50
 
     def execute(self,agent):
+        agent.controller = greedyController
+
         #taking a rough guess at where the ball will be in the future, based on how long it will take to hit the ground
         ball_future = future(agent.ball, timeZ(agent.ball))
 
@@ -169,7 +171,7 @@ class getBoost():
         if ballReady(agent) or agent.me.boost > 80:
             self.expired = True
 
-        return frugalController(agent,target,speed)
+        return agent.controller(agent,target,speed)
 
 class wait():
     def __init__(self):
@@ -239,6 +241,47 @@ def frugalController(agent,target,speed):
 
     time_difference = time.time() - agent.start
     if time_difference > 2.2 and distance2D(target,agent.me) > (velocity2D(agent.me)*2.3) and abs(angle_to_target) < 1 and current_speed < speed:
+        agent.start = time.time()
+    elif time_difference <= 0.1:
+        controller_state.jump = True
+        controller_state.pitch = -1
+    elif time_difference >= 0.1 and time_difference <= 0.15:
+        controller_state.jump = False
+        controller_state.pitch = -1
+    elif time_difference > 0.15 and time_difference < 1:
+        controller_state.jump = True
+        controller_state.yaw = controller_state.steer
+        controller_state.pitch = -1
+
+    return controller_state
+
+# get to the target at all costs
+# that means blow your boost
+# because you're probably on your way to pick up 100 boost
+def greedyController(agent,target,speed):
+    controller_state = SimpleControllerState()
+    location = toLocal(target,agent.me)
+    angle_to_target = math.atan2(location.data[1],location.data[0])
+
+    controller_state.steer = steer(angle_to_target)
+
+    # set throttle
+    current_speed = velocity2D(agent.me)
+    if current_speed < speed:
+        controller_state.throttle = 1.0
+    elif current_speed - 50 > speed:
+        controller_state.throttle = -1.0
+    else:
+        controller_state.throttle = 0
+
+    # boost if possible
+    # front flip when appropriate
+    time_difference = time.time() - agent.start
+    if time_difference >= 1 and agent.me.boost > 0:
+        controller_state.boost = True
+        print("boost to the boost!!!")
+    elif time_difference > 2.2 and distance2D(target,agent.me) > (velocity2D(agent.me)*2.3) and abs(angle_to_target) < 1 and current_speed < speed:
+        # start a front flip
         agent.start = time.time()
     elif time_difference <= 0.1:
         controller_state.jump = True
