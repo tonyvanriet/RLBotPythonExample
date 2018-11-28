@@ -85,10 +85,17 @@ class Shazling(BaseAgent):
         ])
         self.renderer.draw_string_3d(self.me.location.data, 2, 2, car_display, self.renderer.white())
 
-        ball_time_z_display = 'ball time z: {0:.2f}'.format(timeZ(self.ball))
+        ball_time_z_display = 'time z: {0:.2f}'.format(timeZ(self.ball))
 
+        ball_display = '\n'.join([
+            ball_time_z_display
+        ])
+        self.renderer.draw_string_3d(self.ball.location.data, 2, 2, ball_display, self.renderer.white())
+
+        stationary_display = '\n'.join([
+        ])
         stationary_display_x = 1000 * self.team
-        self.renderer.draw_string_2d(stationary_display_x, 0, 2, 2, ball_time_z_display, self.renderer.white())
+        self.renderer.draw_string_2d(stationary_display_x, 0, 2, 2, stationary_display, self.renderer.white())
 
     def preprocess(self,game):
         self.players = []
