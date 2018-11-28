@@ -148,7 +148,7 @@ class getBoost():
         self.expired = False
 
     def available(self, agent):
-        return timeZ(agent.ball) > 1.5 and agent.me.boost < 50
+        return timeZ(agent.ball) > 1.5 and agent.me.boost < 60
 
     def execute(self,agent):
         agent.controller = greedyController
