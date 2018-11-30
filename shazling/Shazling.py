@@ -80,8 +80,8 @@ class Shazling(BaseAgent):
 
         car_display = '\n'.join([
             car_state_display,
-            car_ball_project_display,
-            car_to_ball
+            # car_ball_project_display,
+            # car_to_ball
         ])
         self.renderer.draw_string_3d(self.me.location.data, 2, 2, car_display, self.renderer.white())
 
